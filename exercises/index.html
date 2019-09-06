@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Learn JS</title>
+
+  </head>
+  <body>
+    <h1>Learn Javascript</h1>
+    <h2>Increment count</h2>
+    <p><span id="output">0</span></p>
+    <p><button id="add">Click</button></p>
+    <p id="name">Madalina</p>
+    <button type="button" onclick='document.getElementById("name").innerHTML = "Hello Madalina!"'>Click</button>
+    <button type="button" onclick="document.getElementById('name').innerHTML = Date()">Date and time</button>
+    <button type="button" onclick="this.innerHTML=Date()">Date and time</button>
+    <button id="elem">click me</button>
+    <input id="input" type="checkbox" checked>checkbox
+    <input type="button" onclick="countCoffee()" value="Count coffee!">
+
+    <a href="/" onclick="event.preventDefault()">aici</a>
+
+    <ul id="menu">
+      <li><a href="/">HTML</a></li>
+      <li><a href="/">CSS</a></li>
+      <li><a href="/">JS</a></li>
+    </ul>
+
+    <!-- <p>the <img src="assets/img/cat.jpg" alt="cat">in the<img src="assets/img/hat.jpg" alt="hat"></p>
+    <p><button onclick="replaceImages()">Replace</button></p> -->
+
+    <!-- daca facem click pe primul input se face focus iar pe cel de al doilea nu exista focus, => daca impiedicam evenimentul mousedown nu se concateneaza --> 
+      <input value="Focus works" onfocus="this.value=''"> 
+    <input onmousedown="return false" onfocus="this.value=''" value="Click me">
+
+    <button id="buttons">Alt+Shift+Click!</button>
+
+    <textarea>Type something here...</textarea>
+
+    <b ondblclick="alert('Click!')" onmousedown="return false">
+      Double-click me
+    </b>
+    <b ondblclick="getSelection().removeAllRanges()">
+      Double-click me
+    </b>
+    <div oncopy="alert('Copying forbidden!');return false"><!--prevenirea copierii -->
+      The copying is forbidden for you.
+    </div>
+
+
+
+    <form id="form">
+      <input type="text" name="login">
+    </form>
+
+    <select id="select">
+      <option value="apple">Apple</option>
+      <option value="pear">Pear</option>
+      <option value="banana">Banana</option>
+    </select>
+
+    <select id="select" multiple>
+      <option value="blue" selected>Blues</option>
+      <option value="rock" selected>Rock</option>
+      <option value="classic">Classic</option>
+    </select>
+
+    <form name="elem">
+      <input name="mada" value="1">
+      <input name="line" value="2">
+    </form>
+
+    <form>
+      <input type="radio" name="age" value="20">
+      <input type="radio" name="age" value="23">
+    </form>
+
+    <form onsubmit="return false"><!--cand apasam butonul este avem un eveniment click care trimite formularul-->
+      <input type="text" size="30" value="Focus here and press enter">
+      <input type="submit" value="Submit" onclick="alert('click')">
+    </form>
+
+    <button onclick="go()">Click here</button>
+
+    
+    <script type="text/javascript" src="assets/js/script.js"></script>
+  </body>
+</html>
