@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <title>Budgety</title>
+    </head>
+    <body>
+      
+    
+  <div class="headbudg"> 
+    <div class="contbud">
+      <h5>Available budget in <span class="budget__title--month"></span>: </h5>
+      <span class="budgetresult">0</span>
+      <div class="income"><span>INCOME</span></div>
+      <div class="expenses"><span>EXPENSES</span></div>
+    </div>
+  </div>
+
+  <div class="navbudg">
+    <div class="subnav">
+     <div class="form-group row">
+      <select class="custom-select add_type">
+      <option value="inc" selected>+</option>
+      <option value="exp">-</option>
+      </select>
+        <input class="form-control" type="text" placeholder="Add Description" id="addesc">
+        <input class="form-control" type="number" value="" id="addvalue">
+        <button class="add__btn"><i class="ion-ios-checkmark-outline"></i></button>
+      </div>
+    </div>
+  </div>
+
+
+  <div>
+      <div class="leftp">
+        <h4>INCOME</h4>
+      <div class="income_list"></div>
+    </div>
+
+    <div class="rightp"><h4>EXPENSES</h4>
+      <div class="expenses_list"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  </body>
+</html>
