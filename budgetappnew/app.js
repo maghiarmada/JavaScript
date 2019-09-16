@@ -21,8 +21,10 @@ var budgetApp = (function(){
    totals: {
      inc: 0,
      exp: 0
-   }
- }
+   },
+	 budget: 0,
+	 percent: -1
+ };
  
  
 return {
@@ -42,6 +44,43 @@ return {
      data.allItems[type].push(newItem);
      return newItem;
    },
+	
+	calculateBudget: function(type){
+		var sum = 0;
+		data.allItems[type].forEach(function(current,index){
+			sum += current.value;
+		});
+		data.totals[type] = sum;
+		data.budget = data.totals.inc - data.totals.exp;
+		
+		if(data.totals.inc > 0){
+			data.percent = Math.round((data.totals.exp / data.totals.inc) * 100);
+		}else {
+			data.percent = -1;
+		}
+	},
+	
+	getBudget: function() {
+		return {
+			incTotal: data.totals.inc,
+			expTotal: data.totals.exp,
+			percent: data.percent,
+			budgetTotal: data.budget
+		}
+	},
+	//delete
+	
+	deleteItemBudget: function(type, id){
+		var index, idIndex;
+		idIndex = data.allItems[type].map(function(current){
+			return current.id;
+		});
+		
+		index = idIndex.indexOf(id);
+		if(index !== -1) {
+			data.allItems[type].splice(index, 1);
+		}
+	},
    testing: function(){
     console.log(data);
    }
@@ -60,7 +99,8 @@ var UIController = (function(){
 	valueTotal: ".budgetresult",
     addbtn: ".add__btn",
     incomeContainer: '.income_list',
-    expensesContainer: '.expenses_list'
+    expensesContainer: '.expenses_list',
+		container: '.container'
   }
 
   //set up format number 
@@ -74,12 +114,12 @@ var UIController = (function(){
     int = numSplit[0];
 
     if(int.length > 3){
-      int = int.substr(0, int.length - 3 ) + ',' + int.substr(int.length - 3, 3);
+      int = int.substr(0, int.length - 3 ) + '.' + int.substr(int.length - 3, 3);
     }
 
     dec = numSplit[1];
 
-    return(type === 'exp' ? '-' : '+') + ' ' + int + ',' + dec;
+    return(type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
 	  
 	document.querySelector(DOMvar.budgetTotal).textContent = this.formatNumber(obj.valueTotal, type);
 	if( obj.percentage > 0 ) {
@@ -105,7 +145,7 @@ var UIController = (function(){
       var n = d.getMonth();
 
       return months[n];
-		console.log(months);
+		//  console.log(months);
     },
     addListItem: function(obj, type){
 
@@ -125,15 +165,21 @@ var UIController = (function(){
 
       document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
     },
+		
+		deleteItem: function(selectID){
+			var elem = document.getElementById(selectID);
+			
+			elem.parentNode.removeChild(elem);
+		},
 	  
     clearfields: function(){
       var fields, fieldsArr;
 
       fields = document.querySelectorAll(DOMvar.description + ',' + DOMvar.value);
 
-      fieldsArr = Array.from();//returns a shallow copy of a portion of an array into a new array object. the original array will not be modified
+      fieldsArr = Array.prototype.slice.call(fields);//returns a shallow copy of a portion of an array into a new array object. the original array will not be modified
 
-      fieldsArr.forEch(function(...array){
+      fieldsArr.forEch(function(index, current, array){
         current.value = "";
       });
 
@@ -160,13 +206,35 @@ var mainController = (function(budgetController, UIControl){
 		UIControl.addListItem(newItem, input.type);
 		UIControl.clearfields();
 	};
+	
 	var DOMvar = UIControl.getDOMstrings();
 	
 	document.querySelector(DOMvar.addbtn).addEventListener('click', controlAddItem);
 	document.querySelector('.budget__title--month').textContent = UIControl.getMonth();
 	
-})(budgetApp, UIController);
+	var removeItem = function(event) {
+		var itemID, type, id, item;
+		
+		itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+		if(itemID) { 
+		item = itemID.split('-');
+		type = item [0];
+		id = parseInt(item[1]);
+		mainController.deleteItemBudget(type, id);
+			
+		UIControl.deleteItem(itemID);
+		}
+	}
+	document.querySelector(DOMvar.container).addEventListener('click',removeItem);
+	
+	var updateBudget = function() {
+    budgetControl.calculateBudget();
 
+    var budget = budgetCtrl.getBudget();
+
+    UIController.displayBudget(budget);
+  })(budgetApp, UIController);
+	
 document.addEventListener('keypress',function(event){
 	if(event.keyCode === 13 && event.which === 13){
 		controlAddItem();
